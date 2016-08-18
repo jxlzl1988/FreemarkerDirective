@@ -1,7 +1,10 @@
 package com.sten.freemarker.directive;
 
+import com.sten.freemarker.common.ParamUtils;
+import com.sten.freemarker.common.TemplateDirectiveBodyOverrideWraper;
 import freemarker.core.Environment;
 import freemarker.template.TemplateDirectiveBody;
+import freemarker.template.TemplateDirectiveModel;
 import freemarker.template.TemplateException;
 import freemarker.template.TemplateModel;
 
@@ -14,13 +17,14 @@ import java.util.Map;
  * @author  sten
  * @since  2015年6月19日 上午11:31:41
  */
-public class LayoutDirective extends AbstractDirective {
+public class LayoutDirective  implements TemplateDirectiveModel {
 	
 	public void execute(Environment env,
 						@SuppressWarnings("rawtypes") Map params, TemplateModel[] loopVars,
 						TemplateDirectiveBody body) throws TemplateException, IOException {
-		String name = getDirectiveName(params) ;
-		ContentDirective.TemplateDirectiveBodyOverrideWraper overrideBody = (ContentDirective.TemplateDirectiveBodyOverrideWraper) env.getVariable(name) ;
+
+		String name = ParamUtils.getDirectiveName(params) ;
+		TemplateDirectiveBodyOverrideWraper overrideBody = (TemplateDirectiveBodyOverrideWraper) env.getVariable(name) ;
 		if(overrideBody == null) {
 			if(body != null) {
 				body.render(env.getOut());

@@ -1,12 +1,14 @@
 package com.sten.freemarker.directive;
 
+import com.sten.freemarker.common.ParamUtils;
+import com.sten.freemarker.common.TemplateDirectiveBodyOverrideWraper;
 import freemarker.core.Environment;
 import freemarker.template.TemplateDirectiveBody;
+import freemarker.template.TemplateDirectiveModel;
 import freemarker.template.TemplateException;
 import freemarker.template.TemplateModel;
 
 import java.io.IOException;
-import java.io.Writer;
 import java.util.Map;
 
 /**
@@ -15,32 +17,15 @@ import java.util.Map;
  * @author  sten
  * @since  2015年6月19日 上午11:31:54
  */
-public class ContentDirective extends AbstractDirective {
+public class ContentDirective implements TemplateDirectiveModel {
 
 	public void execute(Environment env,
 						@SuppressWarnings("rawtypes") Map params, TemplateModel[] loopVars,
 						TemplateDirectiveBody body) throws TemplateException, IOException {
-		String name = getDirectiveName(params) ;
-		
-		TemplateDirectiveBodyOverrideWraper current = new TemplateDirectiveBodyOverrideWraper(body,env);
+
+		String name = ParamUtils.getDirectiveName(params) ;
+		TemplateDirectiveBodyOverrideWraper current = new TemplateDirectiveBodyOverrideWraper(body);
 		env.setVariable(name, current);
 	}
-	
-	static class TemplateDirectiveBodyOverrideWraper implements TemplateDirectiveBody,TemplateModel{
-		private TemplateDirectiveBody body;
-		public Environment env;
-		
-		public TemplateDirectiveBodyOverrideWraper(TemplateDirectiveBody body,
-				Environment env) {
-			super();
-			this.body = body;
-			this.env = env;
-		}
-		
-		public void render(Writer out) throws TemplateException, IOException {
-			if(body == null) return;
-			body.render(out);
-		}
-	}
-	
+
 }
