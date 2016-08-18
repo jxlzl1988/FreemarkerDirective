@@ -12,7 +12,7 @@ import java.util.Map;
 /**
  * freemarker 内容指令
  * 
- * @author  Lizhiliang
+ * @author  sten
  * @since  2015年6月19日 上午11:31:54
  */
 public class ContentDirective extends AbstractDirective {
@@ -22,11 +22,8 @@ public class ContentDirective extends AbstractDirective {
 						TemplateDirectiveBody body) throws TemplateException, IOException {
 		String name = getDirectiveName(params) ;
 		
-		TemplateDirectiveBodyOverrideWraper override = (TemplateDirectiveBodyOverrideWraper) env.getVariable(name) ;
-		if(override == null) {
-			TemplateDirectiveBodyOverrideWraper current = new TemplateDirectiveBodyOverrideWraper(body,env);
-			env.setVariable(name, current);
-		}
+		TemplateDirectiveBodyOverrideWraper current = new TemplateDirectiveBodyOverrideWraper(body,env);
+		env.setVariable(name, current);
 	}
 	
 	static class TemplateDirectiveBodyOverrideWraper implements TemplateDirectiveBody,TemplateModel{
